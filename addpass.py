@@ -152,6 +152,7 @@ result = cjdns.AuthorizedPasswords_add(creds['password'], creds['user'])
 if "error" in result:
 	if result['error'] != 'none':
 		print "Failed to add it to the current cjdns instance. Fuck it"
+                import code; code.interact(local=locals())
 	print result
 for ip in config['infotohandout'].keys():
 	config['infotohandout'][ip]['password'] = creds['password']

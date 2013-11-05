@@ -52,3 +52,11 @@ crontab -l > /tmp/currentcron
 echo "0 * * * * /opt/updategit.sh /opt/cjdns" >> /tmp/currentcron
 crontab /tmp/currentcron
 rm /tmp/currentcron
+
+echo "Installing python libraries..."
+if [ -d /usr/share/pyshared/ ]; then
+    ln -s /opt/cjdns/contrib/python/cjdnsadmin/cjdnsadmin.py /usr/share/pyshared/cjdnsadmin.py
+done
+for version in /usr/lib/python2.*; do
+    ln -s /opt/cjdns/contrib/python/cjdnsadmin/cjdnsadmin.py $version/dist-packages/cjdnsadmin.py
+done
