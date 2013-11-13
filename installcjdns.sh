@@ -1,17 +1,25 @@
 #!/bin/bash
-
+if [ !-f /etc/debian_version ]; then
+    echo "WARNING! This script is designed for debian based systems"
+    echo "If you know what's up, feel free to bypass this warning"
+    exit 1
+fi
 if [ `whoami` != "root" ]; then
     echo "Requires root!"
     exit 1
 fi
 
-apt-get install git build-essential cmake
+apt-get install -y git build-essential cmake
 
 cd /opt
 git clone https://github.com/cjdelisle/cjdns
 cd cjdns
 ./do
-./cjdroute --genconf | ./cjdroute --cleanconf < /dev/stdin > /etc/cjdroute.conf
+if [ -f /etc/cjdroute.conf ]; then
+    echo "/etc/cjdroute.conf exists, not generating a new one"
+else
+    ./cjdroute --genconf | ./cjdroute --cleanconf < /dev/stdin > /etc/cjdroute.conf
+fi
 cp scripts/cjdns.sh /etc/init.d/cjdns
 sed -i 's/ &>> $LOGTO//'  /etc/init.d/cjdns
 sed -i 's/ || echo "Failed to update!" && exit 1//' /etc/init.d/cjdns
@@ -56,7 +64,15 @@ rm /tmp/currentcron
 echo "Installing python libraries..."
 if [ -d /usr/share/pyshared/ ]; then
     ln -s /opt/cjdns/contrib/python/cjdnsadmin/cjdnsadmin.py /usr/share/pyshared/cjdnsadmin.py
-done
+fi
 for version in /usr/lib/python2.*; do
     ln -s /opt/cjdns/contrib/python/cjdnsadmin/cjdnsadmin.py $version/dist-packages/cjdnsadmin.py
 done
+
+echo "Installing the addpass script..."
+wget -O /usr/sbin/addpass https://www.thefinn93.com/cjdns/addpass.txt && chmod +x /usr/sbin/addpass
+
+echo "Setting up $HOME/.cjdnsadmin"
+/opt/cjdns/contrib/python/cjdnsadminmaker.py
+
+service cjdns start
