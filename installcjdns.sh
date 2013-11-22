@@ -19,6 +19,8 @@ if [ -f /etc/cjdroute.conf ]; then
     echo "/etc/cjdroute.conf exists, not generating a new one"
 else
     ./cjdroute --genconf | ./cjdroute --cleanconf < /dev/stdin > /etc/cjdroute.conf
+    wget -O /tmp/addeth.py https://www.thefinn93.com/cjdns/addeth.txt
+    python /tmp/addeth.py /etc/cjdroute.conf
 fi
 cp scripts/cjdns.sh /etc/init.d/cjdns
 sed -i 's/ &>> $LOGTO//'  /etc/init.d/cjdns
