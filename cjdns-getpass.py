@@ -13,13 +13,13 @@ except:
     except:
         print "Failed to import cjdnsadmin!"
         sys.exit(1)
-    
+
 searchfor = None
 if len(sys.argv) > 1:
     searchfor = sys.argv[1]
-    
+
 def publictoip6(pubkey):
-    proc = subprocess.Popen(["/opt/cjdns/build/publictoip6", pubkey], stdout=subprocess.PIPE)
+    proc = subprocess.Popen(["/opt/cjdns/publictoip6", pubkey], stdout=subprocess.PIPE)
     proc.wait()
     return proc.stdout.read().strip()
 
@@ -49,5 +49,3 @@ else:
     else:
         print "Failed to find %s" % searchfor
         sys.exit(1)
-        
-
