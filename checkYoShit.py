@@ -278,7 +278,7 @@ except AttributeError:
         libraries = "Failed (AttributeError)"
         issues += 1
         try:
-            cjdnsadmin = connectWithAdminInfo()
+            cjdns = connectWithAdminInfo()
             connection = "Success"
         except IOEror:
             connection = "Fail (no ~/.cjdnsadmin - you monster)"
