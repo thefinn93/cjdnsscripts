@@ -480,4 +480,12 @@ if "cjdns" in dir():
     print "Displaying peer totals for fun:"
     print totalPeers
 
+
+print """          ***********************READ THIS*****************************
+you were probably asked to run this by someone on IRC. Now they're goig to want
+the output. DO NOT paste it straight into IRC. Use a pastebin service. Usually
+a service like https://ezcrypt.it is recommended. At some point down the line,
+this script will be able to diagnose problems, but not now. Enjoy!
+"""
+
 exit(issues)
