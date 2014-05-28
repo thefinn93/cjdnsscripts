@@ -378,6 +378,7 @@ issues = 0
 libraries = "Error"
 connection = "Error"
 importHelp = ""
+connectionHelp = ""
 try:
     import cjdnsadmin
     libraries = "Success"
@@ -394,7 +395,18 @@ except ImportError:
         cjdns = connectWithAdminInfo()
         connection = "Success"
     except IOError:
+        # No ~/.cjdnsadmin
         connection = "Fail (no ~/.cjdnsadmin)"
+        connectionHelp = "\nTry making a connection file at %s/.cjdnsadmin\n" % os.genenv("HOME")
+        connectionHelp += """It should look a bit like this:
+        {
+            "password": "OMGPASSWORD",
+            "config": "/etc/cjdroute.conf",
+            "addr": "127.0.0.1",
+            "port": 11234
+        }
+
+        Get the password from cjdroute.conf under admin->password."""
 except AttributeError:
     try:
         from cjdnsadmin import cjdnsadmin
@@ -410,7 +422,7 @@ except UnboundLocalError:
     connection = "Fail!"
     issues += 1
 print "Checking for python libraries... %s" % libraries
-print "%sTrying to connect to cjdns... %s" % (importHelp, connection)
+print "%sTrying to connect to cjdns... %s%s" % (importHelp, connection, connectionHelp)
 
 dnslookup = socket.getaddrinfo(clearnetDNShost, 80)
 dnsAAAA = "Error"
