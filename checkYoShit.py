@@ -265,14 +265,11 @@ except ImportError:
     libraries = "Fail!"
     importHelp = "Try putting contrib/python/cjdnsadmin/cjdnsadmin.py in one of these:\n"
     for path in sys.path:
-        importHelp += " * %s\n" % path
+        if path != "":
+            importHelp += " * %s\n" % path
     issues += 1
-    try:
-        cjdns = connectWithAdminInfo()
-        connection = "Success"
-    except IOEror:
-        connection = "Fail (no ~/.cjdnsadmin - you monster)"
-        issues += 1
+    cjdns = connectWithAdminInfo()
+    connection = "Success"
 except AttributeError:
     try:
         from cjdnsadmin import cjdnsadmin
