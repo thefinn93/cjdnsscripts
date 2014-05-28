@@ -214,7 +214,7 @@ def _receiverThread(session):
                 continue
 
             try:
-                benc = bdecode(data)
+                benc = bencode.bdecode(data)
             except (KeyError, ValueError):
                 print("error decoding [" + data + "]")
                 continue
@@ -301,7 +301,7 @@ def connect(ipAddr, port, password):
             'd1:q24:Admin_availableFunctions4:argsd4:pagei' +
             str(page) + 'eee')
         data = sock.recv(BUFFER_SIZE)
-        benc = bdecode(data)
+        benc = bencode.bdecode(data)
         for func in benc['availableFunctions']:
             availableFunctions[func] = benc['availableFunctions'][func]
         if (not 'more' in benc):
