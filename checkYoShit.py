@@ -65,7 +65,7 @@ for record in dnslookup:
 print "Checking for ability to lookup AAAA records.... %s" % dnsAAAA
 print "Checking for accurate fc::/8 response.... %s" % dnsAccurate
 
-if connection == "Success":
+if "cjdns" in dir():
     peers = []
     more = True
     i = 0
