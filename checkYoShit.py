@@ -28,6 +28,15 @@ except ImportError:
     for path in sys.path:
         importHelp += " * %s\n" % path
     issues += 1
+except AttributeError:
+    try:
+        from cjdnsadmin import cjdnsadmin
+        cjdns = cjdns = cjdnsadmin.connectWithAdminInfo()
+        libraries = "Gotts do from cjdnsadmin import cjdnsadmin :("
+        issues += 1
+    except:
+        libraries = "Failed (AttributeError)"
+        issues += 1
 except UnboundLocalError:
     connection = "Fail!"
     issues += 1
