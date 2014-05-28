@@ -282,6 +282,7 @@ except AttributeError:
             connection = "Success"
         except IOEror:
             connection = "Fail (no ~/.cjdnsadmin - you monster)"
+            issues += 1
 except UnboundLocalError:
     connection = "Fail!"
     issues += 1
