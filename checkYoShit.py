@@ -33,6 +33,7 @@ except AttributeError:
         from cjdnsadmin import cjdnsadmin
         cjdns = cjdns = cjdnsadmin.connectWithAdminInfo()
         libraries = "Gotts do from cjdnsadmin import cjdnsadmin :("
+        connection = "Success"
         issues += 1
     except:
         libraries = "Failed (AttributeError)"
