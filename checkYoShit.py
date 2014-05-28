@@ -390,13 +390,16 @@ except ImportError:
         if path != "":
             importHelp += " * %s\n" % path
     issues += 1
-    cjdns = connectWithAdminInfo()
-    connection = "Success"
+    try:
+        cjdns = connectWithAdminInfo()
+        connection = "Success"
+    except IOError:
+        connection = "Fail (no ~/.cjdnsadmin)"
 except AttributeError:
     try:
         from cjdnsadmin import cjdnsadmin
         cjdns = cjdnsadmin.connectWithAdminInfo()
-        libraries = "Gotts do from cjdnsadmin import cjdnsadmin :("
+        libraries = "Got to do from cjdnsadmin import cjdnsadmin :("
         connection = "Success"
         issues += 1
     except:
