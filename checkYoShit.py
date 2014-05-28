@@ -16,6 +16,7 @@ issues = 0
 
 libraries = "Error"
 connection = "Error"
+importHelp = ""
 try:
     import cjdnsadmin
     libraries = "Success"
@@ -23,12 +24,15 @@ try:
     connection = "Success"
 except ImportError:
     libraries = "Fail!"
+    importHelp = "Try putting contrib/python/cjdnsadmin/cjdnsadmin.py in one of these:\n"
+    for path in sys.path:
+        importHelp += " * %s\n" % path
     issues += 1
 except UnboundLocalError:
     connection = "Fail!"
     issues += 1
 print "Checking for python libraries... %s" % libraries
-print "Trying to connect to cjdns... %s" % connection
+print "%sTrying to connect to cjdns... %s" % (importHelp, connection)
 
 dnslookup = socket.getaddrinfo(clearnetDNShost, 80)
 dnsAAAA = "Error"
