@@ -267,6 +267,12 @@ except ImportError:
     for path in sys.path:
         importHelp += " * %s\n" % path
     issues += 1
+    try:
+        cjdns = connectWithAdminInfo()
+        connection = "Success"
+    except IOEror:
+        connection = "Fail (no ~/.cjdnsadmin - you monster)"
+        issues += 1
 except AttributeError:
     try:
         from cjdnsadmin import cjdnsadmin
@@ -277,12 +283,7 @@ except AttributeError:
     except:
         libraries = "Failed (AttributeError)"
         issues += 1
-        try:
-            cjdns = connectWithAdminInfo()
-            connection = "Success"
-        except IOEror:
-            connection = "Fail (no ~/.cjdnsadmin - you monster)"
-            issues += 1
+
 except UnboundLocalError:
     connection = "Fail!"
     issues += 1
