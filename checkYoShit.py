@@ -1,4 +1,14 @@
 #!/usr/bin/env python2
+
+__author__ = "Finn Herzfeld"
+__copyright__ = "Copyright 2014, Finn Herzfeld"
+__credits__ = ["Finn Herzfeld"]
+__license__ = "GPL"
+__version__ = "0.5"
+__maintainer__ = "Finn Herzfeld"
+__email__ = "finn@seattlemesh.net"
+__status__ = "Development"
+
 import sys
 import os
 import socket
@@ -411,7 +421,7 @@ except UnboundLocalError:
     connection = "Fail!"
     issues += 1
 print "Checking for python libraries... %s" % libraries
-print "%sTrying to connect to cjdns... %s" % (importHelp, connection)
+print "%sTrying to connect to cjdns... %sv" % (importHelp, connection)
 
 dnslookup = socket.getaddrinfo(clearnetDNShost, 80)
 dnsAAAA = "Error"

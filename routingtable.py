@@ -1,5 +1,14 @@
 #!/usr/bin/env python
 
+__author__ = "Finn Herzfeld"
+__copyright__ = "Copyright 2014, Finn Herzfeld"
+__credits__ = ["Finn Herzfeld"]
+__license__ = "GPL"
+__version__ = "0.5"
+__maintainer__ = "Finn Herzfeld"
+__email__ = "finn@seattlemesh.net"
+__status__ = "Development"
+
 import sys
 import subprocess
 
@@ -13,11 +22,11 @@ except:
     except:
         print "Failed to import cjdnsadmin!"
         sys.exit(1)
-    
+
 searchfor = None
 if len(sys.argv) > 1:
     searchfor = sys.argv[1]
-    
+
 def publictoip6(pubkey):
     proc = subprocess.Popen(["/opt/cjdns/build/publictoip6", pubkey], stdout=subprocess.PIPE)
     proc.wait()

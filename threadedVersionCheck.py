@@ -1,4 +1,14 @@
 #!/usr/bin/env python
+
+__author__ = "Finn Herzfeld"
+__copyright__ = "Copyright 2014, Finn Herzfeld"
+__credits__ = ["Finn Herzfeld"]
+__license__ = "GPL"
+__version__ = "0.5"
+__maintainer__ = "Finn Herzfeld"
+__email__ = "finn@seattlemesh.net"
+__status__ = "Development"
+
 import sys
 import os
 import json
@@ -61,7 +71,7 @@ class VersionCheckThread(threading.Thread):
                 if not ping['error'] in self.versions:
                     self.versions['error'][ping['error']] = 0
                 self.versions['error'][ping['error']] += 1
-            self.queue.task_done() 
+            self.queue.task_done()
 
 def getVersions(timeout=None, threads=5):
     versions = {"cjdns": {}, "protocol": {}, "error": {}}

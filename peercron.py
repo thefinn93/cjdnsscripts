@@ -1,5 +1,14 @@
 #!/usr/bin/env python
 
+__author__ = "Finn Herzfeld"
+__copyright__ = "Copyright 2014, Finn Herzfeld"
+__credits__ = ["Finn Herzfeld"]
+__license__ = "GPL"
+__version__ = "0.5"
+__maintainer__ = "Finn Herzfeld"
+__email__ = "finn@seattlemesh.net"
+__status__ = "Development"
+
 import sys
 import os
 import json
@@ -40,11 +49,11 @@ if not os.path.isfile("/tmp/stoppeercron"):
         sys.exit(1)
 else:
     sys.exit(0)
-    
+
 
 if not "version" in data:
     data['version'] = ""
-    
+
 version = sha1(open(sys.argv[0]).read()).hexdigest()
 if version != data['version']:
     notify("Updated to version %s" % version)
@@ -92,7 +101,7 @@ while more:
         if "version" in ping:
             if not ping['version'] in data[pubkey]['version']:
                 data[pubkey]['version'][ping['version']] = time.time()
-                
+
 save = open(sys.argv[1], "w")
 save.write(json.dumps(data,  sort_keys=True, indent=4, separators=(',', ': ')))
 save.close()

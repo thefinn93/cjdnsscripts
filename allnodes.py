@@ -1,5 +1,14 @@
 #!/usr/bin/env python
 
+__author__ = "Finn Herzfeld"
+__copyright__ = "Copyright 2014, Finn Herzfeld"
+__credits__ = ["Finn Herzfeld"]
+__license__ = "GPL"
+__version__ = "0.5"
+__maintainer__ = "Finn Herzfeld"
+__email__ = "finn@seattlemesh.net"
+__status__ = "Development"
+
 import sys, os
 try:
     from cjdnsadmin import connectWithAdminInfo

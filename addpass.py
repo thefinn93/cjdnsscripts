@@ -1,5 +1,14 @@
 #!/usr/bin/env python
 
+__author__ = "Finn Herzfeld"
+__copyright__ = "Copyright 2014, Finn Herzfeld"
+__credits__ = ["Finn Herzfeld"]
+__license__ = "GPL"
+__version__ = "0.5"
+__maintainer__ = "Finn Herzfeld"
+__email__ = "finn@seattlemesh.net"
+__status__ = "Development"
+
 # You may redistribute this program and/or modify it under the terms of
 # the GNU General Public License as published by the Free Software Foundation,
 # either version 3 of the License, or (at your option) any later version.
@@ -14,7 +23,7 @@
 
 ## cjdns credential maker
 ## Because the go one and the node one are sucky
-## 
+##
 ## No offense
 import sys, json, os, urllib2, random
 from hashlib import sha512
@@ -121,8 +130,8 @@ if not "infotohandout" in config:
 		more = raw_input("Add another? [Y/n]: ")
 		if more == "n" or more == "N":
 			done = True
-	
-	
+
+
 creds = {}
 creds['user'] = raw_input("User: ")
 creds['email'] = raw_input("email: ")
