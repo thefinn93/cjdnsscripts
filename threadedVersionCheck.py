@@ -109,14 +109,14 @@ if __name__ == "__main__":
     data["collectedAt"] = time.time()
     data["runtime"] = time.time() - startTime
 
-    file = None
+    savefile = None
     if len(sys.argv) > 2 and "-v" in sys.argv:
-        file = sys.argv[1]
+        savefile = sys.argv[1]
     elif len(sys.argv) > 1 and not "-v" in sys.argv:
-        file = sys.argv[1]
+        savefile = sys.argv[1]
 
-    if file is not None:
-        a = open(file, "w")
+    if savefile is not None:
+        a = open(savefile, "w")
         a.write(json.dumps(data))
         a.close()
     else:
