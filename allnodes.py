@@ -9,7 +9,7 @@ __maintainer__ = "Finn Herzfeld"
 __email__ = "finn@seattlemesh.net"
 __status__ = "Development"
 
-import sys, os
+import sys
 try:
     from cjdnsadmin import connectWithAdminInfo
 except ImportError:
@@ -25,6 +25,6 @@ while more:
     more = "more" in table
     for route in table['routingTable']:
         if not route['ip'] in nodes:
-             nodes.append(route['ip'])
+            nodes.append(route['ip'])
 	i += 1
 print "\n".join(nodes)
