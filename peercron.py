@@ -28,11 +28,11 @@ def notify(message):
 
 try:
     import cjdnsadmin
-except:
+except ImportError:
     sys.path.append("/opt/cjdns/contrib/python/cjdnsadmin")
     try:
         import cjdnsadmin
-    except:
+    except ImportError:
         notify("Failed to import cjdnsadmin!")
         sys.exit(1)
 

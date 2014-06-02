@@ -14,12 +14,12 @@ import subprocess
 
 try:
     import cjdnsadmin
-except:
+except ImportError:
     print "Failed to find cjdnsadmin in the normal search path. Hax in progress..."
     sys.path.append("/opt/cjdns/contrib/python/cjdnsadmin")
     try:
         import cjdnsadmin
-    except:
+    except ImportError:
         print "Failed to import cjdnsadmin!"
         sys.exit(1)
 
