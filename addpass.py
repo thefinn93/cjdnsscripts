@@ -99,37 +99,37 @@ def PublicToIp6_convert(pubKey):
 
 configfile = "/etc/cjdroute.conf"
 try:
-	config = json.load(open(configfile))
+    config = json.load(open(configfile))
 except IOError:
-	cjdnsadmin = json.load(open(os.getenv("HOME") + "/.cjdnsadmin"))
-	configfile = cjdnsadmin['config']
-	config = json.load(open(configfile))
+    cjdnsadmin = json.load(open(os.getenv("HOME") + "/.cjdnsadmin"))
+    configfile = cjdnsadmin['config']
+    config = json.load(open(configfile))
 # except all the things
 
 if not "infotohandout" in config:
-	print "Welcome to the first run of this crap"
-	print "This is the info you'll be handing out to people"
-	config['infotohandout'] = {}
-	publicip = urllib2.urlopen("http://icanhazip.com").read().replace("\n", "")
-	if isinstance(config['interfaces']['UDPInterface'], list):
-		publicip = config['interfaces']['UDPInterface'][0]['bind'].replace("0.0.0.0", publicip)
-	else:
-		publicip = config['interfaces']['UDPInterface']['bind'].replace("0.0.0.0", publicip)
-	customip = raw_input("IP:port [%s]" % publicip)
-	if customip != "":
-		publicip = customip
-	config['infotohandout'][publicip] = {}
-	done = False
-	while not done:
-		print "Adding arbitrary key/value pair"
-		key = raw_input("Key: ")
-		value = raw_input("Value: ")
-		add = raw_input("Really add? [Y/n]: ")
-		if add == "Y" or add == "y" or add == "":
-			config['infotohandout'][publicip][key] = value
-		more = raw_input("Add another? [Y/n]: ")
-		if more == "n" or more == "N":
-			done = True
+    print "Welcome to the first run of this crap"
+    print "This is the info you'll be handing out to people"
+    config['infotohandout'] = {}
+    publicip = urllib2.urlopen("http://icanhazip.com").read().replace("\n", "")
+    if isinstance(config['interfaces']['UDPInterface'], list):
+        publicip = config['interfaces']['UDPInterface'][0]['bind'].replace("0.0.0.0", publicip)
+    else:
+        publicip = config['interfaces']['UDPInterface']['bind'].replace("0.0.0.0", publicip)
+    customip = raw_input("IP:port [%s]" % publicip)
+    if customip != "":
+        publicip = customip
+    config['infotohandout'][publicip] = {}
+    done = False
+    while not done:
+        print "Adding arbitrary key/value pair"
+        key = raw_input("Key: ")
+        value = raw_input("Value: ")
+        add = raw_input("Really add? [Y/n]: ")
+        if add == "Y" or add == "y" or add == "":
+            config['infotohandout'][publicip][key] = value
+            more = raw_input("Add another? [Y/n]: ")
+        if more == "n" or more == "N":
+            done = True
 
 
 creds = {}
@@ -137,17 +137,17 @@ creds['user'] = raw_input("User: ")
 creds['email'] = raw_input("email: ")
 creds['pubkey'] = raw_input("Public Key: ")
 if creds['pubkey'] == "":
-	creds['cjdnsip'] = raw_input("cjdns ip: ")
+    creds['cjdnsip'] = raw_input("cjdns ip: ")
 else:
-	creds['cjdnsip'] = PublicToIp6_convert(creds['pubkey'])
+    creds['cjdnsip'] = PublicToIp6_convert(creds['pubkey'])
 creds['location'] = raw_input("Location: ")
 creds['clearnetip'] = raw_input("Clearnet IP: ")
 creds['password'] = raw_input("Password (leave blank to generate): ")
 if creds['password'] == "":
-	alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-	for i in range(0,50):	# TODO: Make this number configurable
-		creds['password'] += random.choice(alphabet)
-	print "Password: %s" % creds['password']
+    alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+    for i in range(0,50):	# TODO: Make this number configurable
+        creds['password'] += random.choice(alphabet)
+        print "Password: %s" % creds['password']
 
 config['authorizedPasswords'].append(creds)
 
@@ -159,12 +159,12 @@ save.close()
 print "Adding creds to current cjdns instance: "
 result = cjdns.AuthorizedPasswords_add(creds['password'], creds['user'])
 if "error" in result:
-	if result['error'] != 'none':
-		print "Failed to add it to the current cjdns instance. Fuck it"
+    if result['error'] != 'none':
+        print "Failed to add it to the current cjdns instance. Fuck it"
         import code; code.interact(local=locals())
-	print result
+    print result
 for ip in config['infotohandout'].keys():
-	config['infotohandout'][ip]['password'] = creds['password']
-	config['infotohandout'][ip]['publicKey'] = config['publicKey']
+    config['infotohandout'][ip]['password'] = creds['password']
+    config['infotohandout'][ip]['publicKey'] = config['publicKey']
 
 print json.dumps(config['infotohandout'], sort_keys=True, indent=4, separators=(',', ': '))
