@@ -21,35 +21,35 @@ __status__ = "Development"
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-## cjdns credential maker
-## Because the go one and the node one are sucky
-##
-## No offense
+# cjdns credential maker
+# Because the go one and the node one are sucky
+#
+# No offense
 import sys, json, os, urllib2, random
 from hashlib import sha512
 try:
     import cjdnsadmin
-except:
-    #print "Failed to find cjdnsadmin in the normal search path. Hax in progress..."
+except ImportError:
+    # print "Failed to find cjdnsadmin in the normal search path. Hax in progress..."
     sys.path.append("/opt/cjdns/contrib/python/cjdnsadmin")
     try:
         import cjdnsadmin
-        #print "(hax succeeded)"
-    except:
+        # print "(hax succeeded)"
+    except ImportError:
         print "Failed to import cjdnsadmin!"
         sys.exit(1)
 cjdns = cjdnsadmin.connectWithAdminInfo()
 
-## Stolen from contrib/python/cjdnsadmin/publicToIp6.py ##
+# Stolen from contrib/python/cjdnsadmin/publicToIp6.py ##
 
 # see util/Base32.h
-def Base32_decode(input):
-    output = bytearray(len(input));
+def Base32_decode(b32input):
+    output = bytearray(len(b32input));
     numForAscii = [
         99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,
         99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,
         99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,
-         0, 1, 2, 3, 4, 5, 6, 7, 8, 9,99,99,99,99,99,99,
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9,99,99,99,99,99,99,
         99,99,10,11,12,99,13,14,15,99,16,17,18,19,20,99,
         21,22,23,24,25,26,27,28,29,30,31,99,99,99,99,99,
         99,99,10,11,12,99,13,14,15,99,16,17,18,19,20,99,
@@ -61,12 +61,12 @@ def Base32_decode(input):
     nextByte = 0;
     bits = 0;
 
-    while (inputIndex < len(input)):
-        o = ord(input[inputIndex]);
+    while (inputIndex < len(b32input)):
+        o = ord(b32input[inputIndex]);
         if (o & 0x80): raise ValueError;
         b = numForAscii[o];
         inputIndex += 1;
-        if (b > 31): raise ValueError("bad character " + input[inputIndex]);
+        if (b > 31): raise ValueError("bad character " + b32input[inputIndex]);
 
         nextByte |= (b << bits);
         bits += 5;
@@ -94,7 +94,7 @@ def PublicToIp6_convert(pubKey):
     return out[:-1];
 
 
-## /theft ##
+# /theft ##
 
 
 configfile = "/etc/cjdroute.conf"
@@ -104,14 +104,14 @@ except IOError:
 	cjdnsadmin = json.load(open(os.getenv("HOME") + "/.cjdnsadmin"))
 	configfile = cjdnsadmin['config']
 	config = json.load(open(configfile))
-#except all the things
+# except all the things
 
 if not "infotohandout" in config:
 	print "Welcome to the first run of this crap"
 	print "This is the info you'll be handing out to people"
 	config['infotohandout'] = {}
 	publicip = urllib2.urlopen("http://icanhazip.com").read().replace("\n", "")
-	if type(config['interfaces']['UDPInterface']) == type([]):
+	if isinstance(config['interfaces']['UDPInterface'], list):
 		publicip = config['interfaces']['UDPInterface'][0]['bind'].replace("0.0.0.0", publicip)
 	else:
 		publicip = config['interfaces']['UDPInterface']['bind'].replace("0.0.0.0", publicip)
@@ -161,7 +161,7 @@ result = cjdns.AuthorizedPasswords_add(creds['password'], creds['user'])
 if "error" in result:
 	if result['error'] != 'none':
 		print "Failed to add it to the current cjdns instance. Fuck it"
-                import code; code.interact(local=locals())
+        import code; code.interact(local=locals())
 	print result
 for ip in config['infotohandout'].keys():
 	config['infotohandout'][ip]['password'] = creds['password']
