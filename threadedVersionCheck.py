@@ -49,7 +49,7 @@ class VersionCheckThread(threading.Thread):
                 if 'version' in ping:
                     if debug:
                         print "[Thread #%i] %s has version %s" % (self.threadNumber, node, ping['version'])
-                    if not ping['version'] in self.versions['cjdns']:
+                    if ping['version'] not in self.versions['cjdns']:
                         self.versions['cjdns'][ping['version']] = 0
                     self.versions['cjdns'][ping['version']] += 1
                 if 'protocol' in ping:
@@ -61,13 +61,13 @@ class VersionCheckThread(threading.Thread):
             elif 'result' in ping:
                 if debug:
                     print "[Thread #%i] %s did not ping: %s" % (self.threadNumber, node, ping['result'])
-                if not ping['result'] in self.versions['error']:
+                if ping['result'] not in self.versions['error']:
                     self.versions['error'][ping['result']] = 0;
                 self.versions['error'][ping['result']] += 1
             elif 'error' in ping:
                 if debug:
                     print "[Thread #%i] %s did not ping (error): %s" % (self.threadNumber, node, ping['error'])
-                if not ping['error'] in self.versions:
+                if ping['error'] not in self.versions:
                     self.versions['error'][ping['error']] = 0
                 self.versions['error'][ping['error']] += 1
             self.queue.task_done()
@@ -92,7 +92,7 @@ def getVersions(timeout=None, threads=5):
         more = False # Testing purposes only, delete to do it all
         if 'routingTable' in table:
             for route in table['routingTable']:
-                if not route['ip'] in nodes:
+                if route['ip'] not in nodes:
                     nodes.append(route['ip'])
                     q.put(route['ip'])
         else:
@@ -112,7 +112,7 @@ if __name__ == "__main__":
     savefile = None
     if len(sys.argv) > 2 and "-v" in sys.argv:
         savefile = sys.argv[1]
-    elif len(sys.argv) > 1 and not "-v" in sys.argv:
+    elif len(sys.argv) > 1 and "-v" not in sys.argv:
         savefile = sys.argv[1]
 
     if savefile is not None:

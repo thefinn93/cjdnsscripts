@@ -106,7 +106,7 @@ except IOError:
     config = json.load(open(configfile))
 # except all the things
 
-if not "infotohandout" in config:
+if "infotohandout" not in config:
     print "Welcome to the first run of this crap"
     print "This is the info you'll be handing out to people"
     config['infotohandout'] = {}

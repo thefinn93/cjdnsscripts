@@ -51,7 +51,7 @@ else:
     sys.exit(0)
 
 
-if not "version" in data:
+if "version" not in data:
     data['version'] = ""
 
 version = sha1(open(sys.argv[0]).read()).hexdigest()
@@ -60,7 +60,7 @@ if version != data['version']:
     data['version'] = version
 
 def dbg(msg, level="DEBUG"):
-    #levels = ["DEBUG", "INFO", "WARN", "ERROR"]
+    # levels = ["DEBUG", "INFO", "WARN", "ERROR"]
     if os.getenv("LOGLEVEL") != "":
         if os.getenv("LOGLEVEL") == level:
             print "%s: %s" % (level, msg)
@@ -79,7 +79,7 @@ while more:
     for peer in peertable['peers']:
         pubkey = peer['publicKey']
         dbg("Checking peer %s" % pubkey)
-        if not pubkey in data:
+        if pubkey not in data:
             dbg("%s is new" % pubkey)
             data[pubkey] = peer.copy()
         data[pubkey]['lastseen'] = time.time()
@@ -95,11 +95,11 @@ while more:
             if not peer['user'] in data[pubkey]['user']:
                 data[pubkey]['user'][peer['user']] = time.time()
                 notify("ALERT: %s starting using %s's peering password" % (pubkey, peer['user']))
-        if not "version" in data[pubkey]:
+        if "version" not in data[pubkey]:
             data[pubkey]['version'] = {}
         ping = cjdns.RouterModule_pingNode(publictoip6(pubkey))
         if "version" in ping:
-            if not ping['version'] in data[pubkey]['version']:
+            if ping['version'] not in data[pubkey]['version']:
                 data[pubkey]['version'][ping['version']] = time.time()
 
 save = open(sys.argv[1], "w")

@@ -313,7 +313,7 @@ def connect(ipAddr, port, password):
         benc = bdecode(data)
         for func in benc['availableFunctions']:
             availableFunctions[func] = benc['availableFunctions'][func]
-        if (not 'more' in benc):
+        if ('more' not in benc):
             break
         page = page+1
 
@@ -439,7 +439,7 @@ for record in dnslookup:
     if record[4][0] != clearnetDNSresult:
         dnsAccurate = "Fail! (inaccurate result)"
     else:
-        if not "Fail!" in dnsAccurate:
+        if "Fail!" not in dnsAccurate:
             dnsAccurate = "Success"
 
 print "Checking for ability to lookup AAAA records.... %s" % dnsAAAA
