@@ -10,7 +10,6 @@ __email__ = "finn@seattlemesh.net"
 __status__ = "Development"
 
 import sys
-import os
 import json
 import time
 import Queue

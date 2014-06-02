@@ -31,7 +31,7 @@ clearnetDNSresult = "fc3a:956e:4b69:1c1e:5ebc:11a5:3e71:3e7e"
 BUFFER_SIZE = 69632
 KEEPALIVE_INTERVAL_SECONDS = 2
 
-## Proly dont have bencode either
+# Proly dont have bencode either
 class BTFailure(Exception):
     pass
 
@@ -153,7 +153,7 @@ def bencode(x):
     return ''.join(r)
 
 
-class Session():
+class Session:
     """Current cjdns admin session"""
 
     def __init__(self, socket):
@@ -255,14 +255,14 @@ def _getMessage(session, txid):
             try:
                 # apparently any timeout at all allows the thread to be
                 # stopped but none make it unstoppable with ctrl+c
-                next = session.queue.get(timeout=100)
+                nextSession = session.queue.get(timeout=100)
             except Queue.Empty:
                 continue
-            if 'txid' in next:
-                session.messages[next['txid']] = next
-                # print "adding message [" + str(next) + "]"
+            if 'txid' in nextSession:
+                session.messages[nextSession['txid']] = nextSession
+                # print "adding message [" + str(nextSession) + "]"
             else:
-                print "message with no txid: " + str(next)
+                print "message with no txid: " + str(nextSession)
 
 
 def _functionFabric(func_name, argList, oargList, password):
