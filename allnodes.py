@@ -26,5 +26,5 @@ while more:
     for route in table['routingTable']:
         if not route['ip'] in nodes:
             nodes.append(route['ip'])
-	i += 1
+    i += 1
 print "\n".join(nodes)

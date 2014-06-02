@@ -145,7 +145,7 @@ creds['clearnetip'] = raw_input("Clearnet IP: ")
 creds['password'] = raw_input("Password (leave blank to generate): ")
 if creds['password'] == "":
     alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-    for i in range(0,50):	# TODO: Make this number configurable
+    for i in range(0,50):    # TODO: Make this number configurable
         creds['password'] += random.choice(alphabet)
         print "Password: %s" % creds['password']
 
