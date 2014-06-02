@@ -1,4 +1,7 @@
 # cjdns scripts
+
+[![Code Health](https://landscape.io/github/thefinn93/cjdnsscripts/master/landscape.png)](https://landscape.io/github/thefinn93/cjdnsscripts/master)
+
 This is my collection of scripts for [cjdns](https://github.com/cjdelisle/cjdns).
 Some of them have obvious uses, others don't. *Most require `~/.cjdnsadmin`
 and the cjdns python libraries to be installed*. I'll try to give a quick
