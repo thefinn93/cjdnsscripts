@@ -12,16 +12,6 @@ __status__ = "Development"
 import subprocess
 import sys
 import json
-try:
-    import cjdnsadmin
-except:
-    print "Failed to find cjdnsadmin in the normal search path. Hax in progress..."
-    sys.path.append("/opt/cjdns/contrib/python/cjdnsadmin")
-    try:
-        import cjdnsadmin
-    except:
-        print "Failed to import cjdnsadmin!"
-        sys.exit(1)
 
 def publictoip6(pubkey):
     proc = subprocess.Popen(["/opt/cjdns/build/publictoip6", pubkey], stdout=subprocess.PIPE)
@@ -58,4 +48,4 @@ except IOError:
     if dns is not None:
         print "%s\t%s\t%s" % (sys.argv[1], ip, dns['name'])
     else:
-        print "%s\ts\t-" % (sys.argv[1], ip)
+        print "%s\t%s\t-" % (sys.argv[1], ip)
