@@ -153,7 +153,7 @@ def bencode(x):
     return ''.join(r)
 
 
-class Session:
+class Session(object):
     """Current cjdns admin session"""
 
     def __init__(self, socket):
@@ -413,7 +413,7 @@ except AttributeError:
         libraries = "Got to do from cjdnsadmin import cjdnsadmin :("
         connection = "Success"
         issues += 1
-    except:
+    except ImportError:
         libraries = "Failed (AttributeError)"
         issues += 1
 
