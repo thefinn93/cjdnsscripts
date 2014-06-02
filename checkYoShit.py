@@ -360,8 +360,8 @@ def connect(ipAddr, port, password):
     funcOargs_c = {}
     for func in funcOargs:
         funcOargs_c[func] = list(
-            [key + "=" + str(value)
-                for (key, value) in funcOargs[func].items()])
+            [key + "=" + str(value) for (key, value) in funcOargs[func].items()]
+        )
 
     for func in availableFunctions:
         session._functions += (
