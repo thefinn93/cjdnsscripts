@@ -25,16 +25,18 @@ __status__ = "Development"
 # Because the go one and the node one are sucky
 #
 # No offense
-import sys, json, os, urllib2, random
+import sys
+import json
+import os
+import urllib2
+import random
 from hashlib import sha512
 try:
     import cjdnsadmin
 except ImportError:
-    # print "Failed to find cjdnsadmin in the normal search path. Hax in progress..."
     sys.path.append("/opt/cjdns/contrib/python/cjdnsadmin")
     try:
         import cjdnsadmin
-        # print "(hax succeeded)"
     except ImportError:
         print "Failed to import cjdnsadmin!"
         sys.exit(1)
@@ -42,56 +44,61 @@ cjdns = cjdnsadmin.connectWithAdminInfo()
 
 # Stolen from contrib/python/cjdnsadmin/publicToIp6.py ##
 
+
 # see util/Base32.h
 def Base32_decode(b32input):
-    output = bytearray(len(b32input));
+    output = bytearray(len(b32input))
     numForAscii = [
-        99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,
-        99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,
-        99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,
-        0, 1, 2, 3, 4, 5, 6, 7, 8, 9,99,99,99,99,99,99,
-        99,99,10,11,12,99,13,14,15,99,16,17,18,19,20,99,
-        21,22,23,24,25,26,27,28,29,30,31,99,99,99,99,99,
-        99,99,10,11,12,99,13,14,15,99,16,17,18,19,20,99,
-        21,22,23,24,25,26,27,28,29,30,31,99,99,99,99,99,
-    ];
+        99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99,
+        99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99,
+        99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99,
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 99, 99, 99, 99, 99, 99,
+        99, 99, 10, 11, 12, 99, 13, 14, 15, 99, 16, 17, 18, 19, 20, 99,
+        21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 99, 99, 99, 99, 99,
+        99, 99, 10, 11, 12, 99, 13, 14, 15, 99, 16, 17, 18, 19, 20, 99,
+        21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 99, 99, 99, 99, 99,
+    ]
 
-    outputIndex = 0;
-    inputIndex = 0;
-    nextByte = 0;
-    bits = 0;
+    outputIndex = 0
+    inputIndex = 0
+    nextByte = 0
+    bits = 0
 
     while (inputIndex < len(b32input)):
-        o = ord(b32input[inputIndex]);
-        if (o & 0x80): raise ValueError;
-        b = numForAscii[o];
-        inputIndex += 1;
-        if (b > 31): raise ValueError("bad character " + b32input[inputIndex]);
+        o = ord(b32input[inputIndex])
+        if (o & 0x80):
+            raise ValueError
+        b = numForAscii[o]
+        inputIndex += 1
+        if (b > 31):
+            raise ValueError("bad character " + b32input[inputIndex])
 
-        nextByte |= (b << bits);
-        bits += 5;
+        nextByte |= (b << bits)
+        bits += 5
 
         if (bits >= 8):
-            output[outputIndex] = nextByte & 0xff;
-            outputIndex += 1;
-            bits -= 8;
-            nextByte >>= 8;
+            output[outputIndex] = nextByte & 0xff
+            outputIndex += 1
+            bits -= 8
+            nextByte >>= 8
 
     if (bits >= 5 or nextByte):
-        raise ValueError("bits is " + str(bits) + " and nextByte is " + str(nextByte));
+        raise ValueError("bits is %s and nextByte is %s" % (bits, nextByte))
 
-    return buffer(output, 0, outputIndex);
+    return buffer(output, 0, outputIndex)
 
 
 def PublicToIp6_convert(pubKey):
-    if (pubKey[-2:] != ".k"): raise ValueError("key does not end with .k");
-    keyBytes = Base32_decode(pubKey[0:-2]);
-    hashOne = sha512(keyBytes).digest();
-    hashTwo = sha512(hashOne).hexdigest();
-    first16 = hashTwo[0:32];
-    out = '';
-    for i in range(0,8): out += first16[i*4 : i*4+4] + ":";
-    return out[:-1];
+    if (pubKey[-2:] != ".k"):
+        raise ValueError("key does not end with .k")
+    keyBytes = Base32_decode(pubKey[0:-2])
+    hashOne = sha512(keyBytes).digest()
+    hashTwo = sha512(hashOne).hexdigest()
+    first16 = hashTwo[0:32]
+    out = ''
+    for i in range(0, 8):
+        out += first16[i*4: i*4+4] + ":"
+    return out[:-1]
 
 
 # /theft ##
@@ -112,9 +119,11 @@ if "infotohandout" not in config:
     config['infotohandout'] = {}
     publicip = urllib2.urlopen("http://icanhazip.com").read().replace("\n", "")
     if isinstance(config['interfaces']['UDPInterface'], list):
-        publicip = config['interfaces']['UDPInterface'][0]['bind'].replace("0.0.0.0", publicip)
+        publicip = config['interfaces']['UDPInterface'][0]['bind'].replace(
+            "0.0.0.0", publicip)
     else:
-        publicip = config['interfaces']['UDPInterface']['bind'].replace("0.0.0.0", publicip)
+        publicip = config['interfaces']['UDPInterface']['bind'].replace(
+            "0.0.0.0", publicip)
     customip = raw_input("IP:port [%s]" % publicip)
     if customip != "":
         publicip = customip
@@ -145,14 +154,16 @@ creds['clearnetip'] = raw_input("Clearnet IP: ")
 creds['password'] = raw_input("Password (leave blank to generate): ")
 if creds['password'] == "":
     alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-    for i in range(0, 50):    # TODO: Make this number configurable
+    for i in range(0, 50):
         creds['password'] += random.choice(alphabet)
 
 config['authorizedPasswords'].append(creds)
 
 save = open(configfile, "w")
-# TODO: This should also be configurable
-save.write(json.dumps(config, sort_keys=True, indent=4, separators=(',', ': ')))
+save.write(json.dumps(config,
+                      sort_keys=True,
+                      indent=4,
+                      separators=(',', ': ')))
 save.close()
 
 print "Adding creds to current cjdns instance: "
@@ -168,4 +179,7 @@ for ip in config['infotohandout'].keys():
     config['infotohandout'][ip]['password'] = creds['password']
     config['infotohandout'][ip]['publicKey'] = config['publicKey']
 
-print json.dumps(config['infotohandout'], sort_keys=True, indent=4, separators=(',', ': '))
+print json.dumps(config['infotohandout'],
+                 sort_keys=True,
+                 indent=4,
+                 separators=(',', ': '))
